@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS productos (
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(255),
     precio DECIMAL(10, 2) NOT NULL,
-    id_categoria INT,
+    id_categoria INT NOT NULL,
     disponible BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
 );
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS productos (
 -- ============================================
 CREATE TABLE IF NOT EXISTS pedidos (
     id_pedido INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente INT,
+    id_cliente INT NOT NULL,
     fecha_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
     estado ENUM('pendiente', 'en_preparacion', 'listo', 'entregado', 'cancelado') DEFAULT 'pendiente',
     total DECIMAL(10, 2),
@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS pedidos (
 -- ============================================
 CREATE TABLE IF NOT EXISTS detalle_pedido (
     id_detalle INT AUTO_INCREMENT PRIMARY KEY,
-    id_pedido INT,
-    id_producto INT,
-    cantidad INT NOT NULL,
+    id_pedido INT NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT NOT NULL CHECK (cantidad > 0),
     precio_unitario DECIMAL(10, 2) NOT NULL,
     subtotal DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
